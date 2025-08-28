@@ -1,18 +1,12 @@
-import Image from "next/image";
+import SearchBar from "./components/SearchBar";
 
-export default function Home() {
+export default async function Home() {
+
   return (
     <>
       <main className="flex flex-col items-center justify-center text-black">
         {/* search bar */}
-        <div className="flex gap-4 p-2 bg-purple-800 rounded-lg">
-          <button className="px-2 cursor-pointer">O</button>
-          <input
-            type="text"
-            className="bg-purple-100 rounded-md text-purple-950"
-            placeholder="Location Search"
-          />
-        </div>
+        <SearchBar />
 
         {/* weather */}
         <div className="p-6 mt-4 w-[500px] h-[400px] bg-gradient-to-br from-purple-500  to-yellow-500 rounded-lg">
