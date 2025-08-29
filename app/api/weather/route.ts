@@ -1,11 +1,11 @@
-// find geological with country name
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const location = searchParams.get("location"); // get value from query params
+    const lat = searchParams.get("lat");
+    const lon = searchParams.get("lon");
 
     const res = await fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${process.env.WEATHER_API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}`
     );
 
     const data = await res.json();
