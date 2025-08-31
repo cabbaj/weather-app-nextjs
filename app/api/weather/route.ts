@@ -5,7 +5,7 @@ export async function GET(req: Request) {
     const lon = searchParams.get("lon");
 
     const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.WEATHER_API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.WEATHER_API_KEY}`
     );
 
     const data = await res.json();

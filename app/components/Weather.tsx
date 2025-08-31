@@ -1,28 +1,51 @@
 "use client";
 import Image from "next/image";
 import { FormEvent, useRef, useState } from "react";
+import { fetchGeo } from "../utils/fetchGeo";
+import { fetchWeather } from "../utils/fetchWeather";
 
 export default function Weather() {
   const [location, setLocation] = useState("");
   const form = useRef(null);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [todayWeather, setTodayWeather] = useState("");
+  const [todayTemp, setTodayTemp] = useState("");
+  const [todayHumi, setTodayHumi] = useState("");
 
   const locationSearch = async () => {
     try {
       // cant use process.env variable in this file. so we make the api route.ts instead to handle it
-      const res = await fetch(`/api/geo?location=${location}`); // location is query params
-      const data = await res.json();
+      // fetch geolocation from name
+      const geoData = await fetchGeo(location); // function from ultils
+      console.log("geoData", geoData);
+
+      if (!geoData || geoData.length === 0) {
+        throw new Error("cant fine the location");
+      }
+
+      // set country and name of city for header
+      const country = geoData[0].country;
+      const city = geoData[0].name;
+      setCountry(country);
+      setCity(city);
+
+      // fetch weather's data from geo data
+      const lat = geoData[0].lat; // store lat, lon from geolocation
+      const lon = geoData[0].lon;
+      const data = await fetchWeather({ lat, lon });
       console.log(data);
 
-      if (data) {
-        const lat = data[0].lat;
-        const lon = data[0].lon;
-        const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
-        const currentWeather = await res.json();
-
-        console.log("current weather", currentWeather);
-      }
+      // set data to use on webpage
+      const weather = data.weather[0].main;
+      const temp = data.main.temp;
+      const humi = data.main.humidity;
+      setTodayWeather(weather);
+      setTodayTemp(temp);
+      setTodayHumi(humi);
+      console.log(weather, temp, humi);
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   };
 
@@ -63,8 +86,8 @@ export default function Weather() {
         <div className="flex justify-between">
           <h1 className="font-semibold ">Current Weather</h1>
           <div>
-            <p className="text-">Thailand</p>
-            <p>Songkhla</p>
+            <p className="text-">{country}</p>
+            <p>{city}</p>
           </div>
         </div>
 
@@ -73,9 +96,9 @@ export default function Weather() {
           <div className="flex gap-30">
             <img src="/vercel.svg" className="size-20" alt="weather image" />
             <div>
-              <p>Today's Rain</p>
-              <p>Temp: 25 C</p>
-              <p>Humidity: 60</p>
+              <p>Today's {todayWeather}</p>
+              <p>Temp: {todayTemp} &deg;C</p>
+              <p>Humidity: {todayHumi} %</p>
             </div>
           </div>
         </div>
