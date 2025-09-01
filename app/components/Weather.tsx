@@ -9,9 +9,10 @@ export default function Weather() {
   const form = useRef(null);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [todayWeather, setTodayWeather] = useState("");
-  const [todayTemp, setTodayTemp] = useState("");
-  const [todayHumi, setTodayHumi] = useState("");
+  const [weather, setWeather] = useState("");
+  const [temp, setTemp] = useState("");
+  const [humi, setHumi] = useState("");
+  const [icon, setIcon] = useState("");
 
   const locationSearch = async () => {
     try {
@@ -19,10 +20,6 @@ export default function Weather() {
       // fetch geolocation from name
       const geoData = await fetchGeo(location); // function from ultils
       console.log("geoData", geoData);
-
-      if (!geoData || geoData.length === 0) {
-        throw new Error("cant fine the location");
-      }
 
       // set country and name of city for header
       const country = geoData[0].country;
@@ -38,12 +35,23 @@ export default function Weather() {
 
       // set data to use on webpage
       const weather = data.weather[0].main;
-      const temp = data.main.temp;
+      const icon = data.weather[0].icon;
+      const temp = Math.trunc(data.main.temp);
       const humi = data.main.humidity;
-      setTodayWeather(weather);
-      setTodayTemp(temp);
-      setTodayHumi(humi);
-      console.log(weather, temp, humi);
+
+      // const time = {
+      //   dt: data.dt,
+      //   timezone: data.timezone,
+      // };
+
+      // const test = (time.dt + 25200) * 1_000;
+      // const localTime = new Date(test);
+      // console.log(time.timezone);
+
+      setWeather(weather);
+      setTemp(`${temp}`); // use `` cuz data is number but temp variable receive only string
+      setHumi(humi);
+      setIcon(icon);
     } catch (error) {
       console.log(error);
     }
@@ -84,22 +92,36 @@ export default function Weather() {
       {/* header */}
       <div className="p-6 mt-4 w-[500px] h-[400px] bg-gradient-to-br from-purple-500  to-yellow-500 rounded-lg">
         <div className="flex justify-between">
-          <h1 className="font-semibold ">Current Weather</h1>
           <div>
-            <p className="text-">{country}</p>
-            <p>{city}</p>
+            <h1 className="font-semibold text-2xl">Weather</h1>
+            {weather && (
+              <p className="text-">
+                {city}, {country}
+              </p>
+            )}
           </div>
+          <div></div>
         </div>
 
         {/* current weather */}
         <div className="flex justify-center">
-          <div className="flex gap-30">
-            <img src="/vercel.svg" className="size-20" alt="weather image" />
-            <div>
-              <p>Today's {todayWeather}</p>
-              <p>Temp: {todayTemp} &deg;C</p>
-              <p>Humidity: {todayHumi} %</p>
-            </div>
+          <div className="flex gap-10 items-center">
+            {weather ? (
+              <>
+                <img
+                  src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
+                  className="size-40"
+                  alt="weather image"
+                />
+                <div>
+                  <p className="font-medium text-3xl">{temp} &deg;C</p>
+                  <p>Today's {weather}</p>
+                  <p>Humidity: {humi} %</p>
+                </div>
+              </>
+            ) : (
+              <p>No Location</p>
+            )}
           </div>
         </div>
 
