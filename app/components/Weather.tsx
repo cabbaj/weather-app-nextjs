@@ -96,23 +96,23 @@ export default function Weather() {
   return (
     <>
       {/* search bar */}
-      <div>
+      <div className="w-[300px]">
         <form
           onSubmit={handleSubmit}
-          className="flex gap-2 p-2 bg-purple-800 rounded-lg"
+          className="flex gap-4 p-3 bg-neutral-900 rounded-lg border-1 border-neutral-600"
         >
-          <button type="submit" className="cursor-pointer">
+          <button type="submit" className="cursor-pointer hover:bg-neutral-950 p-1 rounded-lg">
             <Image
-              src="/globe.svg"
+              src="/search.svg"
               alt="search button"
-              width={20}
-              height={20}
+              width={30}
+              height={30}
               className="dark:invert"
             />
           </button>
           <input
             type="text"
-            className="bg-purple-100 rounded-md text-purple-950"
+            className="bg-white w-full rounded-md text-black px-2"
             placeholder="Location Search"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
@@ -121,19 +121,19 @@ export default function Weather() {
       </div>
 
       {/* header */}
-      <div className="p-6 mt-4 w-[500px] h-[400px] bg-gradient-to-br from-purple-500  to-yellow-500 rounded-lg">
+      <div className=" p-6 mt-10 w-[400px] h-[300px] bg-neutral-900 border-1 border-neutral-600 rounded-lg">
         <div className="flex justify-between">
           <div>
             <h1 className="font-semibold text-2xl">Weather</h1>
             {city && country && (
-              <p className="text-gray-900">
+              <p className="text-neutral-400">
                 {city}, {country}
               </p>
             )}
           </div>
           <div className="text-right">
-            {localDay && <p className="text-gray-900">{localDay}</p>}
-            {localTime && <p className="text-gray-900">{localTime}</p>}
+            {localDay && <p className="text-neutral-400">{localDay}</p>}
+            {localTime && <p className="text-neutral-400">{localTime}</p>}
           </div>
         </div>
 
@@ -151,8 +151,8 @@ export default function Weather() {
                 />
                 <div>
                   <p className="font-medium text-3xl mb-2">{temp} &deg;C </p>
-                  <p className="text-gray-900">Today's {weather}</p>
-                  <p className="text-gray-900">Humidity: {humi} %</p>
+                  <p className="text-neutral-400">Today's {weather}</p>
+                  <p className="text-neutral-400">Humidity: {humi} %</p>
                 </div>
               </>
             ) : (
@@ -160,13 +160,6 @@ export default function Weather() {
               !error && <p>Search for a location to see the weather.</p>
             )}
           </div>
-        </div>
-
-        {/* forecast */}
-        <div>
-          <p className="font-medium">5 Days Forcast</p>
-          {/* use .map or import component */}
-          <div className="flex flex-row"></div>
         </div>
       </div>
     </>

@@ -24,13 +24,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-purple-950 container flex flex-col  min-h-screen mx-auto  antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-w-screen relative container flex flex-col bg-black  mx-auto  antialiased`}
       >
-        <header className="mt-4 mb-auto text-3xl font-bold text-center text-yellow-100">Weather App</header>
-
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background:
+              "radial-gradient(125% 125% at 50% 100%, #000000 40%, #350136 100%)",
+          }}
+        />
         {children}
-
-        <footer className="mt-auto text-center text-purple-800">made by cabbaj</footer>
       </body>
     </html>
   );
