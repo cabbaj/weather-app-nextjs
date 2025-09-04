@@ -8,8 +8,12 @@ export async function GET(req: Request) {
       `https://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${process.env.WEATHER_API_KEY}`
     );
 
-    const data = await res.json();
+    if (!res.ok) {
+      console.error(`HTTP error! status: ${res.status}`);
+      return null;
+    }
 
+    const data = await res.json();
     return Response.json(data);
   } catch (error) {
     console.log("something went wrong");

@@ -27,6 +27,7 @@ export default function Weather() {
       setWeather(""); // Clear previous results
       setLocalTime(""); // Clear previous time
       setLocalDay(""); // Clear previous day
+      setInputValue(""); // clear search bar
 
       try {
         // fetch and set geo data

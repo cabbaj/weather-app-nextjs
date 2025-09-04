@@ -1,7 +1,17 @@
+// this function will fetch geolocation from /api/geo folder
 export const fetchGeo = async (location: string) => {
-  const res = await fetch(`/api/geo?location=${location}`); // location is query params
-  const data = await res.json();
+  try {
+    const res = await fetch(`/api/geo?location=${location}`); // location is query params
 
-  return data;
+    if (!res.ok) {
+      console.error(`HTTP error! status: ${res.status}`);
+      return null;
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
-

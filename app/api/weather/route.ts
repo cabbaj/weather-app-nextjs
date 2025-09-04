@@ -8,11 +8,15 @@ export async function GET(req: Request) {
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.WEATHER_API_KEY}`
     );
 
-    const data = await res.json();
+    if (!res.ok) {
+      console.error(`HTTP error! status: ${res.status}`);
+      return null;
+    }
 
+    const data = await res.json();
     return Response.json(data);
   } catch (error) {
     console.log("something went wrong");
+    return null;
   }
 }
-
